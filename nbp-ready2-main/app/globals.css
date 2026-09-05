@@ -162,7 +162,7 @@
 }
 
 .login-field {
-  min-height: 56px;
+  min-height: 48px;
   box-shadow: 0 2px 3px oklch(0.2 0.03 270 / 0.08);
 }
 

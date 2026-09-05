@@ -44,14 +44,14 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="login-screen flex min-h-screen flex-col items-center justify-center px-4 py-10">
+    <main className="login-screen flex min-h-screen flex-col items-center justify-center px-3 py-4 sm:px-4 sm:py-10">
       <div className="w-full max-w-[400px]">
-        <section className="rounded-3xl bg-white px-6 py-8 shadow-[0_20px_45px_rgba(0,0,0,0.18)]">
+        <section className="rounded-3xl bg-white px-5 py-5 shadow-[0_20px_45px_rgba(0,0,0,0.18)] sm:px-6 sm:py-8">
           <div className="flex flex-col items-center text-center">
             <img
               src={logoImage || '/placeholder.svg'}
               alt="National Bank of Pakistan logo"
-              className="h-14 w-auto object-contain"
+              className="h-12 w-auto object-contain sm:h-14"
             />
             <h1 className="mt-4 text-base font-medium text-[#555555]">National Bank of Pakistan</h1>
             <p className="mt-1 text-sm text-[#8a8a8a]" dir="rtl" lang="ur">
@@ -59,12 +59,12 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className="mt-7 text-left">
+          <div className="mt-5 text-left sm:mt-7">
             <h2 className="text-2xl font-bold text-[#1a1a1a]">Welcome Back!</h2>
             <p className="mt-1 text-sm text-[#8a8a8a]">Please sign in to your account</p>
           </div>
 
-          <form className="mt-6" onSubmit={handleSubmit}>
+          <form className="mt-4 sm:mt-6" onSubmit={handleSubmit}>
             <label htmlFor="username" className="block text-sm font-semibold text-[#333333]">
               Username
             </label>
@@ -85,7 +85,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <label htmlFor="password" className="mt-5 block text-sm font-semibold text-[#333333]">
+            <label htmlFor="password" className="mt-4 block text-sm font-semibold text-[#333333] sm:mt-5">
               Password
             </label>
             <div className="login-field mt-2 flex items-center rounded-xl border border-[#d9d9d9] bg-white">
@@ -114,7 +114,7 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <label htmlFor="mobile" className="mt-5 block text-sm font-semibold text-[#333333]">
+            <label htmlFor="mobile" className="mt-4 block text-sm font-semibold text-[#333333] sm:mt-5">
               Mobile Number
             </label>
             <div className="login-field mt-2 flex items-center rounded-xl border border-[#d9d9d9] bg-white">
