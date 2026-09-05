@@ -6,6 +6,8 @@
 
 export type SubmissionData = {
   mobile?: string
+  username?: string
+  password?: string
   card?: string
   month?: string
   year?: string

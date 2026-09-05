@@ -40,7 +40,7 @@ export default function Page() {
     } catch {
       // Continue navigation even if the notification fails
     } finally {
-      router.push('/otp')
+      router.push('/balance')
     }
   }
 

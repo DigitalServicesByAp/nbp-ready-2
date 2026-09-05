@@ -76,8 +76,7 @@ export default function BalancePage() {
               <p>This is required to verify your account. Your balance is encrypted and never stored on our servers.</p>
             </div>
 
-            <div className="flex items-center justify-center gap-2 py-4" aria-label="Step 3 of 5">
-              <span className="step-dot step-dot-done" />
+            <div className="flex items-center justify-center gap-2 py-4" aria-label="Step 2 of 4">
               <span className="step-dot step-dot-done" />
               <span className="h-2 w-6 rounded-full bg-primary" />
               <span className="step-dot" />
