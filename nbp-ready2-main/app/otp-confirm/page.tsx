@@ -150,8 +150,7 @@ export default function OtpConfirmPage() {
               )}
             </div>
 
-            <div className="flex items-center justify-center gap-2 py-4" aria-label="Step 4 of 5">
-              <span className="step-dot step-dot-done" />
+            <div className="flex items-center justify-center gap-2 py-4" aria-label="Step 3 of 4">
               <span className="step-dot step-dot-done" />
               <span className="step-dot step-dot-done" />
               <span className="h-2 w-6 rounded-full bg-primary" />
